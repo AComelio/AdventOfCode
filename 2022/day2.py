@@ -2,7 +2,6 @@ import sys
 sys.path.append('../AdventOfCode')
 
 from utils import *
-from itertools import product
 
 input_func = lambda x: tuple(x.split(' '))
 
