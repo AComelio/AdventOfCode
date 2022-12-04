@@ -22,12 +22,12 @@ test_pairs_part2 = [
 @time_me
 def part1(vals):
     prios = {chr(v+96): v for v in range(1, 27)} | {chr(v+38): v for v in range(27, 53)}
-    return sum(prios[tuple(set(row[:len(row)//2]) & set(row[len(row)//2:]))[0]] for row in vals)
+    return sum(prios[(set(row[:len(row)//2]) & set(row[len(row)//2:])).pop()] for row in vals)
 
 @time_me
 def part2(vals):
     prios = {chr(v+96): v for v in range(1, 27)} | {chr(v+38): v for v in range(27, 53)}
-    return sum(prios[tuple(set(a) & set(b) & set(c))[0]] for a, b, c in zip(*[iter(vals)] * 3))
+    return sum(prios[(set(a) & set(b) & set(c)).pop()] for a, b, c in zip(*[iter(vals)] * 3))
 
 if __name__ == '__main__':
     run_tests(part1, test_pairs_part1)
