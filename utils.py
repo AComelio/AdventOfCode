@@ -18,9 +18,13 @@ def time_me(func):
         return r
     return inner1
 
-def tokenise_input_file(filepath, seperator='\n', func=None):
-    with open(filepath, 'r') as f:
-        text = f.read()
+def tokenise_input_file(src, seperator='\n', func=None):
+    if os.path.exists(src):
+        filepath = src
+        with open(filepath, 'r') as f:
+            text = f.read()
+    else:
+        text = src
     if func is None:
         return text.split(seperator)
     return list(map(func, text.split(seperator)))
@@ -43,7 +47,7 @@ def get_adjacent_coords(coord, include_self=False):
     return tuple(p for p in product(*ranges) if p != coord)
 
 def request_problem_input(day, year):
-    fp = f'{year}/day{day}_input.txt'
+    fp = f'day{day}_input.txt'
     if not os.path.exists(fp):
         uri = f'https://adventofcode.com/{year}/day/{day}/input'
         response = requests.get(uri, cookies={'session': os.environ['AOC_TOKEN'].split('=')[1]})
