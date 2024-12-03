@@ -8,6 +8,7 @@ import time
 from itertools import product
 import requests
 import os
+from environment import session_token
 
 def time_me(func):
     def inner1(*args, **kwargs):
@@ -27,7 +28,7 @@ def tokenise_input_file(src, seperator='\n', func=None):
         text = src
     if func is None:
         return text.split(seperator)
-    return list(map(func, text.split(seperator)))
+    return tuple(map(func, text.split(seperator)))
 
 def run_tests(func, io_pairs):
     print(f'Running {len(io_pairs)} test(s)')
@@ -50,7 +51,7 @@ def request_problem_input(day, year):
     fp = f'day{day}_input.txt'
     if not os.path.exists(fp):
         uri = f'https://adventofcode.com/{year}/day/{day}/input'
-        response = requests.get(uri, cookies={'session': os.environ['AOC_TOKEN'].split('=')[1]})
+        response = requests.get(uri, cookies={'session': session_token})
         with open(fp, 'w') as f:
             f.write(response.text)
     with open(fp, 'r') as f:
