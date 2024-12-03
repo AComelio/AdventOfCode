@@ -6,6 +6,8 @@ Created on Thu Dec  3 09:25:46 2020
 
 import time
 from itertools import product
+import requests
+import os
 
 def time_me(func):
     def inner1(*args, **kwargs):
@@ -39,3 +41,14 @@ def get_adjacent_coords(coord, include_self=False):
     if include_self:
         return tuple(product(*ranges))
     return tuple(p for p in product(*ranges) if p != coord)
+
+def request_problem_input(day, year):
+    fp = f'{year}/day{day}_input.txt'
+    if not os.path.exists(fp):
+        uri = f'https://adventofcode.com/{year}/day/{day}/input'
+        response = requests.get(uri, cookies={'session': os.environ['AOC_TOKEN'].split('=')[1]})
+        with open(fp, 'w') as f:
+            f.write(response.text)
+    with open(fp, 'r') as f:
+        inputs = f.read()
+    return inputs.strip()
